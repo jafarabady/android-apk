@@ -1,13 +1,33 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
+from rest_framework import permissions
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND
+from rest_framework.views import APIView
+
+from client.models import Name
 
 
-def book_list(request):
-    books = [
-        {'title': 'Book 1', 'author': 'Author 1'},
-        {'title': 'Book 2', 'author': 'Author 2'},
-        {'title': 'Book 3', 'author': 'Author 3'}
-    ]
-    return JsonResponse({'books': books})
+class Name(APIView):
+    permission_classes = (
+        permissions.AllowAny,
+        #                              ^
+        #                         a comma here
+    )
 
-# Create your views here.
+    def post(self, request):
+        context = {}
+        try:
+            salam = request.POST.get('name')
+            mmd = Name(name=salam)
+            mmd.save()
+            context['msg'] = "ذخیره گردید"
+            status_code = HTTP_200_OK
+        except:
+            context['msg'] = 'Not Found'
+            status_code = HTTP_404_NOT_FOUND
+        return Response(context, status=status_code)
+
+    def get(self, request):
+        context = {}
+        return HttpResponse('salaaaaaaaaaaaaaaaaaaaaaaaaam')
