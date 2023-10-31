@@ -91,11 +91,11 @@ REST_FRAMEWORK = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'busy_hoover',
+        'NAME': 'wizardly_pike',
         'USER': 'root',
-        'PASSWORD': 'TV3GjGou6I3trpOtAsJqvUzu',
-        'HOST': 'alfie.iran.liara.ir',
-        'PORT': '31091',
+        'PASSWORD': 'FBBTHxrWb2WRPqQxR4Avga5p',
+        'HOST': 'grace.iran.liara.ir',
+        'PORT': '30283',
     }
 }
 

@@ -2,10 +2,11 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from rest_framework import permissions
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
 from client.models import Name
+from client.serializers import NameSerializer
 
 
 class Namee(APIView):
@@ -15,26 +16,33 @@ class Namee(APIView):
 
     def post(self, request):
         context = {}
-        try:
+        name = request.POST.get('name')
+        family = request.POST.get('family')
+        print(1)
+        print(request.data)
+        print(8245)
+        mmd = Name(name=name)
+        mmd.save()
+        print(51554)
+        context['msg'] = "ذخیره گردید"
+        status_code = HTTP_200_OK
 
-            salam = request.POST.get('name')
-            mmd = Name(name=salam)
-            mmd.save()
-            context['msg'] = "ذخیره گردید"
-            status_code = HTTP_200_OK
-        except:
-            context['msg'] = 'Not Found'
-            status_code = HTTP_404_NOT_FOUND
+        # context['msg'] = 'فیلدنام  نمی‌تواند خالی باشد'
+        # status_code = HTTP_400_BAD_REQUEST
+        # context['msg'] = 'ذخیره نشد'
+        # status_code = HTTP_404_NOT_FOUND
+
         return Response(context, status=status_code)
 
-    def get(self, request):
-        context = {}
-        try:
-            mmd = Name.objects.all()
-            context['mmd'] = mmd.name
-            context['msg'] = "ذخیره گردید"
-            status_code = HTTP_200_OK
-        except:
-            context['msg'] = 'Not Found'
-            status_code = HTTP_404_NOT_FOUND
-        return Response(context, status=status_code)
+
+def get(self, request):
+    context = {}
+    try:
+        mmd = Name.objects.get(id=1)
+        context['name'] = NameSerializer(mmd, many=False).data
+        context['msg'] = "ذخیره گردید"
+        status_code = HTTP_200_OK
+    except:
+        context['msg'] = 'چیزی برای نمایش نیست'
+        status_code = HTTP_404_NOT_FOUND
+    return Response(context, status=status_code)
